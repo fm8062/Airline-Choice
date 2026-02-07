@@ -1,0 +1,173 @@
+---
+title: ""
+execute:
+  echo: false
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+
+
+data <- readRDS("clean_airline_data.rds")
+
+
+lcc_airlines <- c(
+  "easyJet",
+  "Transavia"
+)
+
+
+lcc_data <- data %>%
+  filter(AirlineName %in% lcc_airlines)
+
+LCC_Factors <- lcc_data %>%
+  summarise(
+    PriceValue = mean(PriceValue, na.rm = TRUE),
+    Comfort = mean(Comfort, na.rm = TRUE),
+    ServiceQuality = mean(ServiceQuality, na.rm = TRUE),
+    OnboardProduct = mean(OnboardProduct, na.rm = TRUE)
+  ) %>%
+  pivot_longer(
+    everything(),
+    names_to = "Factor",
+    values_to = "AverageRating"
+  )
+
+ggplot(
+  LCC_Factors,
+  aes(
+    x = reorder(Factor, AverageRating),
+    y = AverageRating,
+    fill = Factor
+  )
+) +
+  geom_col(width = 0.6, show.legend = FALSE) +
+  coord_flip() +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    title = "What drives airline choice for low-cost carriers?",
+    subtitle = "easyJet and Transavia – leisure travelers",
+    x = "",
+    y = "Average passenger rating"
+  ) +
+  theme_minimal(base_size = 15)
+
+
+```
+
+```{r}
+
+
+
+LCC_Time <- lcc_data %>%
+  group_by(Year) %>%
+  summarise(
+    PriceValue = mean(PriceValue, na.rm = TRUE),
+    Comfort = mean(Comfort, na.rm = TRUE),
+    ServiceQuality = mean(ServiceQuality, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  pivot_longer(
+    -Year,
+    names_to = "Factor",
+    values_to = "AverageRating"
+  )
+
+ggplot(
+  LCC_Time,
+  aes(
+    x = Year,
+    y = AverageRating,
+    color = Factor
+  )
+) +
+  geom_line(linewidth = 1.2) +
+  scale_color_brewer(palette = "Dark2") +
+  labs(
+    title = "How passenger ratings evolved for low-cost carriers",
+    subtitle = "easyJet and Transavia (2014–2024)",
+    x = "",
+    y = "Average rating"
+  ) +
+  theme_minimal(base_size = 15)
+
+```
+
+```{r}
+ryanair_data <- data %>%
+  filter(AirlineName == "Ryanair")
+
+RyanairFactors <- ryanair_data %>%
+  summarise(
+    PriceValue = mean(PriceValue, na.rm = TRUE),
+    Comfort = mean(Comfort, na.rm = TRUE),
+    ServiceQuality = mean(ServiceQuality, na.rm = TRUE),
+    OnboardProduct = mean(OnboardProduct, na.rm = TRUE)
+  ) %>%
+  pivot_longer(
+    everything(),
+    names_to = "Factor",
+    values_to = "AverageRating"
+  )
+
+ggplot(
+  RyanairFactors,
+  aes(
+    x = reorder(Factor, AverageRating),
+    y = AverageRating,
+    fill = Factor
+  )
+) +
+  geom_col(width = 0.6, show.legend = FALSE) +
+  coord_flip() +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    title = "What drives airline choice for Ryanair passengers?",
+    subtitle = "Leisure travelers only",
+    x = "",
+    y = "Average passenger rating"
+  ) +
+  theme_minimal(base_size = 15)
+
+```
+
+```{r}
+
+RyanairTime <- ryanair_data %>%
+  group_by(Year) %>%
+  summarise(
+    PriceValue = mean(PriceValue, na.rm = TRUE),
+    Comfort = mean(Comfort, na.rm = TRUE),
+    ServiceQuality = mean(ServiceQuality, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+RyanairTime_long <- RyanairTime %>%
+  pivot_longer(
+    -Year,
+    names_to = "Factor",
+    values_to = "AverageRating"
+  )
+
+
+ggplot(
+  RyanairTime_long,
+  aes(
+    x = Year,
+    y = AverageRating,
+    color = Factor
+  )
+) +
+  geom_line(linewidth = 1.2) +
+  scale_color_brewer(palette = "Dark2") +
+  labs(
+    title = "How Ryanair passengers' expectations evolved over time",
+    subtitle = "Leisure travelers (1995–2024)",
+    x = "",
+    y = "AverageRating"
+  ) +
+  theme_minimal(base_size = 15)
+
+```

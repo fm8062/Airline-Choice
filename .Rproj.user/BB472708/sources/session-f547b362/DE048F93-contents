@@ -1,0 +1,36 @@
+project:
+  type: website
+  output-dir: _site
+
+publish:
+  gh-pages:
+    branch: gh-pages
+
+website:
+  title: "What drives passengers' airline choice?"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: Low_cost_airlines.qmd
+        text: "Low cost airlines"
+      - href: premium_airlines.qmd
+        text: "Premium airlines"
+      - href: comparison.qmd
+        text: "Comparisons"
+      - href: methodology.qmd
+        text: "Methodology"
+      - href: bibliography.qmd
+        text: "Bibliography"
+
+format:
+  html:
+    theme:
+      - cosmo
+    css: styles.css
+    toc: true
+
+editor: visual
+
+
+

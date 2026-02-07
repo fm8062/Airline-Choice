@@ -1,0 +1,23 @@
+{
+  "index.qmd": {
+    "index.html": "36a3e41f"
+  },
+  "about.qmd": {
+    "about.html": "f7ea5a73"
+  },
+  "Low_cost_airlines.qmd": {
+    "Low_cost_airlines.html": "1fbb728a"
+  },
+  "comparison.qmd": {
+    "comparison.html": "636e33f2"
+  },
+  "premium_airlines.qmd": {
+    "premium_airlines.html": "83e787e7"
+  },
+  "methodology.qmd": {
+    "methodology.html": "7963f9fc"
+  },
+  "bibliography.qmd": {
+    "bibliography.html": "f1f70c21"
+  }
+}

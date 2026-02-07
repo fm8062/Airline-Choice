@@ -1,0 +1,619 @@
+---
+title: ""
+format: html
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+![](images/clipboard-1651580166.png)
+
+```{r}
+
+
+library(tidyverse)
+library(lubridate)
+library(janitor)
+library(readxl)
+library(dplyr)
+
+data_raw <- read_excel("AirlineReviews.xlsx")
+
+data_raw <- read_excel(
+  "AirlineReviews.xlsx",
+  skip = 1,
+  col_names = TRUE
+)
+
+data <- data_raw %>%
+  select(
+    AirlineName,
+    TravelType,
+    CabinType,
+    DatePub,
+    OverallScore,
+    ValueRating,
+    SeatComfortRating,
+    ServiceRating,
+    GroundServiceRating,
+    FoodRating,
+    EntertainmentRating,
+    WifiRating
+  )
+
+
+rating_vars <- c(
+  "ValueRating",
+  "SeatComfortRating",
+  "ServiceRating",
+  "GroundServiceRating",
+  "FoodRating",
+  "EntertainmentRating",
+  "WifiRating"
+)
+
+data <- data %>%
+  mutate(across(all_of(rating_vars), ~ ifelse(. == 0, NA, .)))
+
+data <- data %>%
+  filter(TravelType != "Business")
+
+data <- data %>%
+  mutate(
+    PriceValue = ValueRating,
+    Comfort = SeatComfortRating,
+
+    ServiceQuality = rowMeans(
+      select(., ServiceRating, GroundServiceRating),
+      na.rm = TRUE
+    ),
+
+    OnboardProduct = rowMeans(
+      select(., FoodRating, EntertainmentRating, WifiRating),
+      na.rm = TRUE
+    )
+  )
+
+
+
+data <- data %>%
+  mutate(
+    DatePub_parsed = parse_date_time(
+      DatePub,
+      orders = c("dmy", "mdy", "ymd", "Ymd", "d b Y")
+    ),
+    Year = year(DatePub_parsed)
+  )
+
+
+data <- data %>%
+  filter(!is.na(Year), Year >= 1990, Year <= 2024)
+
+
+
+
+
+FactorImportance <- data %>%
+  summarise(
+    PriceValue = mean(PriceValue, na.rm = TRUE),
+    Comfort = mean(Comfort, na.rm = TRUE),
+    ServiceQuality = mean(ServiceQuality, na.rm = TRUE),
+    OnboardProduct = mean(OnboardProduct, na.rm = TRUE)
+  ) %>%
+  pivot_longer(
+    everything(),
+    names_to = "Factor",
+    values_to = "AverageRating"
+  )
+
+
+ggplot(FactorImportance,
+       aes(x = reorder(Factor, AverageRating),
+           y = AverageRating)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Main factors influencing airline choice (leisure travelers)",
+    x = "",
+    y = "Average passenger rating"
+  ) +
+  theme_minimal()
+
+
+
+
+
+#--------------------
+
+
+
+# ---- 1. Load required packages (explicit & minimal) ----
+library(tidyverse)   # data manipulation + ggplot2
+library(lubridate)   # date handling
+library(readxl)      # Excel import
+
+
+# ---- 2. Import data ----
+# Skip first row if it contains metadata or merged headers
+data_raw <- read_excel(
+  path = "AirlineReviews.xlsx",
+  skip = 1,
+  col_names = TRUE
+)
+
+
+# ---- 3. Keep only variables relevant to airline choice ----
+data <- data_raw %>%
+  select(
+    AirlineName,
+    TravelType,
+    CabinType,
+    DatePub,
+    OverallScore,
+    ValueRating,
+    SeatComfortRating,
+    ServiceRating,
+    GroundServiceRating,
+    FoodRating,
+    EntertainmentRating,
+    WifiRating
+  )
+
+
+# ---- 4. Clean rating variables ----
+# Replace zeros (non-responses) with NA
+rating_vars <- c(
+  "ValueRating",
+  "SeatComfortRating",
+  "ServiceRating",
+  "GroundServiceRating",
+  "FoodRating",
+  "EntertainmentRating",
+  "WifiRating"
+)
+
+data <- data %>%
+  mutate(across(all_of(rating_vars), ~ na_if(., 0)))
+
+
+# ---- 5. Focus on non-business (leisure) travel ----
+data <- data %>%
+  filter(TravelType != "Business")
+
+
+# ---- 6. Construct airline choice factors ----
+# These correspond directly to decision dimensions
+data <- data %>%
+  mutate(
+    PriceValue = ValueRating,
+    Comfort = SeatComfortRating,
+
+    ServiceQuality = rowMeans(
+      select(., ServiceRating, GroundServiceRating),
+      na.rm = TRUE
+    ),
+
+    OnboardProduct = rowMeans(
+      select(., FoodRating, EntertainmentRating, WifiRating),
+      na.rm = TRUE
+    )
+  )
+
+
+# ---- 7. Parse publication date and extract year ----
+data <- data %>%
+  mutate(
+    DatePub_parsed = parse_date_time(
+      DatePub,
+      orders = c("dmy", "mdy", "ymd", "Ymd", "d b Y")
+    ),
+    Year = year(DatePub_parsed)
+  ) %>%
+  filter(!is.na(Year), Year >= 1990, Year <= 2024)
+
+
+# ---- 8. Measure average importance of each factor ----
+FactorImportance <- data %>%
+  summarise(
+    PriceValue = mean(PriceValue, na.rm = TRUE),
+    Comfort = mean(Comfort, na.rm = TRUE),
+    ServiceQuality = mean(ServiceQuality, na.rm = TRUE),
+    OnboardProduct = mean(OnboardProduct, na.rm = TRUE)
+  ) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "Factor",
+    values_to = "AverageRating"
+  )
+
+
+# ---- 9. Visualization: main airline choice factors ----
+ggplot(
+  FactorImportance,
+  aes(
+    x = reorder(Factor, AverageRating),
+    y = AverageRating,
+    fill = Factor
+  )
+) +
+  geom_col(width = 0.7, show.legend = FALSE) +
+  coord_flip() +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    title = "Main factors influencing airline choice",
+    subtitle = "Leisure travelers (1–2024)",
+    x = "",
+    y = "Average passenger rating"
+  ) +
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(size = 13),
+    axis.text = element_text(size = 12)
+  )
+
+
+
+```
+
+```{r}
+AirlineFactors <- data %>%
+  group_by(AirlineName) %>%
+  summarise(
+    PriceValue = mean(ValueRating, na.rm = TRUE),
+    Comfort = mean(SeatComfortRating, na.rm = TRUE),
+    Service = mean(ServiceRating, na.rm = TRUE),
+    Onboard = mean(
+      rowMeans(
+        select(cur_data(), FoodRating, EntertainmentRating, WifiRating),
+        na.rm = TRUE
+      ),
+      na.rm = TRUE
+    ),
+    .groups = "drop"
+  ) %>%
+  filter(!is.na(AirlineName))
+AirlineFactors_long <- AirlineFactors %>%
+  pivot_longer(
+    -AirlineName,
+    names_to = "Factor",
+    values_to = "AverageRating"
+  )
+
+ggplot(AirlineFactors_long,
+       aes(x = reorder(AirlineName, AverageRating),
+           y = AverageRating,
+           fill = Factor)) +
+  geom_col() +
+  coord_flip() +
+  facet_wrap(~ Factor, scales = "free_x") +
+  labs(
+    title = "How airlines differ across choice factors (leisure travelers)",
+    x = "",
+    y = "Average rating"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+
+
+
+
+
+european_airlines <- c(
+  "Air France",
+  "Lufthansa",
+  "British Airways",
+  "KLM Royal Dutch Airlines",
+  "Iberia",
+  "Aer Lingus",
+  "Ryanair",
+  "easyJet",
+  "Wizz Air"
+)
+
+american_airlines <- c(
+  "American Airlines",
+  "Delta Air Lines",
+  "United Airlines",
+  "Southwest Airlines",
+  "JetBlue Airways",
+  "Alaska Airlines"
+)
+
+asian_airlines <- c(
+  "Singapore Airlines",
+  "Japan Airlines",
+  "Korean Air",
+  "Asiana Airlines",
+  "Emirates",
+  "Qatar Airways"
+)
+
+selected_airlines <- c(
+  european_airlines,
+  american_airlines,
+  asian_airlines
+)
+
+data_selected <- data %>%
+  filter(AirlineName %in% selected_airlines)
+
+AirlineFactors <- data_selected %>%
+  group_by(AirlineName) %>%
+  summarise(
+    PriceValue = mean(ValueRating, na.rm = TRUE),
+    Comfort = mean(SeatComfortRating, na.rm = TRUE),
+    Service = mean(ServiceRating, na.rm = TRUE),
+    Onboard = mean(
+      rowMeans(
+        select(cur_data(), FoodRating, EntertainmentRating, WifiRating),
+        na.rm = TRUE
+      ),
+      na.rm = TRUE
+    ),
+    .groups = "drop"
+  )
+
+AirlineFactors_long <- AirlineFactors %>%
+  pivot_longer(
+    -AirlineName,
+    names_to = "Factor",
+    values_to = "AverageRating"
+  )
+
+
+AirlineFactors_long <- AirlineFactors_long %>%
+  mutate(
+    Region = case_when(
+      AirlineName %in% european_airlines ~ "Europe",
+      AirlineName %in% american_airlines ~ "North America",
+      AirlineName %in% asian_airlines ~ "Asia"
+    )
+  )
+ggplot(
+  filter(AirlineFactors_long, Factor == "PriceValue"),
+  aes(
+    x = reorder(AirlineName, AverageRating),
+    y = AverageRating,
+    fill = Region
+  )
+) +
+  geom_col(width = 0.7) +
+  coord_flip() +
+  labs(
+    title = "Perceived value for money by airline",
+    subtitle = "Leisure travelers",
+    x = "",
+    y = "Average rating"
+  ) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(size = 13),
+    axis.text.y = element_text(size = 12),
+    legend.position = "top"
+  )
+
+
+```
+
+```{r}
+
+ggplot(
+  filter(AirlineFactors_long, Factor == "Comfort"),
+  aes(
+    x = reorder(AirlineName, AverageRating),
+    y = AverageRating,
+    fill = Region
+  )
+) +
+  geom_col(width = 0.7) +
+  coord_flip() +
+  labs(
+    title = "Perceived comfort by airline",
+    subtitle = "Leisure travelers",
+    x = "",
+    y = "Average rating"
+  ) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(size = 13),
+    axis.text.y = element_text(size = 12),
+    legend.position = "top"
+  )
+
+```
+
+```{r}
+
+ggplot(
+  filter(AirlineFactors_long, Factor == "Service"),
+  aes(
+    x = reorder(AirlineName, AverageRating),
+    y = AverageRating,
+    fill = Region
+  )
+) +
+  geom_col(width = 0.7) +
+  coord_flip() +
+  labs(
+    title = "Perceived value for money by airline",
+    subtitle = "Leisure travelers",
+    x = "",
+    y = "Average rating"
+  ) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(size = 13),
+    axis.text.y = element_text(size = 12),
+    legend.position = "top"
+  )
+```
+
+```{r}
+ggplot(
+  filter(AirlineFactors_long, Factor == "Onboard"),
+  aes(
+    x = reorder(AirlineName, AverageRating),
+    y = AverageRating,
+    fill = Region
+  )
+) +
+  geom_col(width = 0.7) +
+  coord_flip() +
+  labs(
+    title = "Perceived onboard 'leisure' by airline",
+    subtitle = "Leisure travelers",
+    x = "",
+    y = "Average rating"
+  ) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(size = 13),
+    axis.text.y = element_text(size = 12),
+    legend.position = "top"
+  )
+
+
+```
+
+```{r}
+
+TopAirlines <- data %>%
+  count(AirlineName, sort = TRUE) %>%
+  slice_head(n = 5) %>%
+  pull(AirlineName)
+AirlineTime <- data %>%
+  filter(AirlineName %in% TopAirlines) %>%
+  group_by(AirlineName, Year) %>%
+  summarise(
+    PriceValue = mean(ValueRating, na.rm = TRUE),
+    Comfort = mean(SeatComfortRating, na.rm = TRUE),
+    .groups = "drop"
+  )
+ggplot(AirlineTime,
+       aes(x = Year, y = PriceValue, color = AirlineName)) +
+  geom_line(linewidth = 1.2) +
+  labs(
+    title = "Evolution of price sensitivity by airline",
+    x = "",
+    y = "Average value-for-money rating"
+  ) +
+  theme_minimal()
+
+
+#------
+
+library(lubridate)
+
+data <- data %>%
+  mutate(
+    DatePub = parse_date_time(
+      DatePub,
+      orders = c(
+        "ymd", "dmy", "mdy",
+        "Ymd HMS", "dmy HMS", "mdy HMS",
+        "B d Y", "d B Y"
+      )
+    ),
+    Year = year(DatePub)
+  )
+
+time_airlines <- c(
+  "Air France",
+  "Lufthansa",
+  "British Airways",
+  "KLM",
+  "Iberia",
+  "Ryanair",
+  "Aer Lingus",
+  "Emirates",
+  "Qatar Airways",
+  "Etihad Airways"
+)
+
+AirlineTime <- data %>%
+  filter(AirlineName %in% time_airlines, !is.na(Year)) %>%
+  group_by(AirlineName, Year) %>%
+  summarise(
+    PriceValue = mean(ValueRating, na.rm = TRUE),
+    Comfort = mean(SeatComfortRating, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  filter(Year >= 1995)
+
+
+AirlineTime <- AirlineTime %>%
+  mutate(
+    Region = case_when(
+      AirlineName %in% c("Ryanair", "Aer Lingus") ~ "European Low-Cost",
+      AirlineName %in% c(
+        "Air France", "Lufthansa",
+        "British Airways", "KLM", "Iberia"
+      ) ~ "European Legacy",
+      AirlineName %in% c(
+        "Emirates", "Qatar Airways", "Etihad Airways"
+      ) ~ "Gulf"
+    )
+  )
+
+
+ggplot(
+  AirlineTime,
+  aes(
+    x = Year,
+    y = PriceValue,
+    color = Region,
+    linetype = AirlineName
+  )
+) +
+  geom_line(linewidth = 1.2, alpha = 0.9) +
+  scale_color_brewer(palette = "Dark2") +
+  labs(
+    title = "Evolution of perceived value for money",
+    subtitle = "European and Gulf airlines – leisure travelers",
+    x = "",
+    y = "Average value-for-money rating",
+    color = "Airline group",
+    linetype = "Airline"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(size = 13),
+    axis.text = element_text(size = 11),
+    legend.position = "right",
+    panel.grid.minor = element_blank()
+  )
+
+
+
+
+#“Since the late 1990s, value-for-money has become a central decision factor, driven by low-cost carriers. Meanwhile, Gulf airlines maintain strong perceived value through service quality rather than price.”
+
+
+
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+saveRDS(data, "clean_airline_data.rds")
+
+```

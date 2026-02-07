@@ -1,0 +1,23 @@
+---
+title: ""
+execute:
+  echo: false
+---
+
+Because ticket prices are not observed, we measure price sensitivity using passengers’ value-for-money ratings, which reflect how strongly price influences satisfaction relative to service quality.
+
+How are airline choice factors measured? #All factors in this analysis are measured using passenger-reported ratings. These ratings capture travelers’ perceptions, which are particularly relevant for understanding airline choice in non-business (leisure) travel.
+
+Value for money #Value for money is measured using the variable ValueRating, which reflects passengers’ perceived balance between the price paid and the quality of the experience received. It does not measure the actual ticket price, but rather whether passengers feel the service was worth the cost. Average ratings are computed by airline and over time.
+
+Seat comfort #Seat comfort is measured using SeatComfortRating, based on passengers’ evaluations of legroom, seat space, and physical comfort. This variable captures differences in aircraft configuration and airline business models.
+
+Service quality #Service quality is measured using ServiceRating, reflecting passengers’ assessments of cabin crew behavior, professionalism, and responsiveness during the flight.
+
+Ground services #Ground services are measured using GroundServiceRating, which evaluates airport-related processes such as check-in, boarding, and baggage handling.
+
+Onboard experience #The onboard experience is measured as a composite indicator combining FoodRating, EntertainmentRating, and WifiRating. This composite captures the overall quality of in-flight amenities and product differentiation.
+
+Methodological note #All variables are subjective evaluations rather than objective performance measures. However, because airline choice is driven by passenger perceptions, these ratings are well suited to analyzing how decision factors have evolved over time.
+
+We classify a trip as non-business when TravelType is not equal to “Business”. All observations explicitly labeled as Business are excluded from the sample.

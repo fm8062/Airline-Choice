@@ -1,0 +1,17 @@
+{
+  "hash": "5510ba4a4ecee660722976ba93917a18",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"\"\nformat: html\nexecute:\n  echo: false\n  warning: false\n  message: false\n---\n\n![](images/clipboard-1651580166.png)\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-1-2.png){width=672}\n:::\n:::\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-2-2.png){width=672}\n:::\n:::\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-5-1.png){width=672}\n:::\n:::\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-6-1.png){width=672}\n:::\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-6-2.png){width=672}\n:::\n:::\n\n\n\n::: {.cell}\n\n:::\n\n\n\n::: {.cell}\n\n:::\n\n\n\n::: {.cell}\n\n:::\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

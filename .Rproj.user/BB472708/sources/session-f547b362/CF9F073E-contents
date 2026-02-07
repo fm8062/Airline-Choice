@@ -1,0 +1,69 @@
+---
+title: ""
+execute:
+  echo: false
+---
+
+```{r}
+
+
+library(tidyverse)
+library(lubridate)
+
+data <- readRDS("clean_airline_data.rds")
+
+comparison_airlines <- c(
+  "Ryanair",
+  "easyJet",
+  "Lufthansa",
+  "Emirates"
+)
+
+ComparisonData <- data %>%
+  filter(AirlineName %in% comparison_airlines) %>%
+  group_by(AirlineName) %>%
+  summarise(
+    PriceValue = mean(PriceValue, na.rm = TRUE),
+    Comfort = mean(Comfort, na.rm = TRUE),
+    ServiceQuality = mean(ServiceQuality, na.rm = TRUE),
+    OnboardProduct = mean(OnboardProduct, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  pivot_longer(
+    -AirlineName,
+    names_to = "Factor",
+    values_to = "AverageRating"
+  )
+
+ggplot(
+  ComparisonData,
+  aes(
+    x = Factor,
+    y = AverageRating,
+    fill = AirlineName
+  )
+) +
+  geom_col(
+    position = position_dodge(width = 0.75),
+    width = 0.65
+  ) +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    title = "Airline choice factors across business models",
+    subtitle = "Leisure travelers: low-cost vs full-service vs premium",
+    x = "",
+    y = "Average passenger rating",
+    fill = "Airline"
+  ) +
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(size = 13),
+    axis.text.x = element_text(size = 12, face = "bold"),
+    legend.position = "top"
+  )
+
+
+```
+
+This comparison shows that airline choice factors depend strongly on business model: price dominates for low-cost carriers, while service quality and onboard experience are decisive for full-service and premium airlines.
