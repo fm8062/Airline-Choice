@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "What drives passengers' airline choice?",
+    "section": "",
+    "text": "In addition to our bibliographic research, we decided to analyze a dataset of 129,000 flight reviews using R software (see methodology tab) to identify the main factors driving airline choice. Although the dataset did not include information on the perceived environmental performance of airlines, it did provide valuable insights into perceptions of price, service, and comfort."
+  },
+  {
     "objectID": "comparison.html",
     "href": "comparison.html",
     "title": "What drives passengers' airline choice?",
