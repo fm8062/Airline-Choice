@@ -109,6 +109,10 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Comparisons</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./environmental_friendliness.html"> 
+<span class="menu-text">Environmental friendliness</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link active" href="./methodology.html" aria-current="page"> 
 <span class="menu-text">Methodology</span></a>
   </li>  
@@ -127,8 +131,17 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#k-airline-reviews" id="toc-k-airline-reviews" class="nav-link active" data-scroll-target="#k-airline-reviews"><strong>128k Airline Reviews</strong></a>
+  <ul class="collapse">
+  <li><a href="#about-dataset" id="toc-about-dataset" class="nav-link" data-scroll-target="#about-dataset"><strong>About Dataset</strong></a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
@@ -136,17 +149,29 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<section id="k-airline-reviews" class="level1">
+<h1><strong>128k Airline Reviews</strong></h1>
+<p>We resorted to a dataset that was available on Kaggle, a platform for data science and machine learning professionals where we can freely download open data. The data itself was scraped from Airlinequality.com.</p>
+<section id="about-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="about-dataset"><strong>About Dataset</strong></h2>
+<p>This data set was scraped from airlinequality.com and contains text-based reviews in addition to reviewers’ ratings of available dimensions on the website.</p>
+<p>The data is available here: <a href="https://www.kaggle.com/datasets/joelljungstrom/128k-airline-reviews" class="uri">https://www.kaggle.com/datasets/joelljungstrom/128k-airline-reviews</a></p>
+<p>Extract from the website: “Names of users were purposefully left out from the crawler. Although the earliest review dates back to 2001, note that some dimensions have been added to the website over time. Consequently, not all dimensions have been filled out for each review.”</p>
+<p>Screenshot from the actual document:</p>
+<p><img src="images/clipboard-3018868269.png" class="img-fluid"></p>
 <p>Because ticket prices are not observed, we measure price sensitivity using passengers’ value-for-money ratings, which reflect how strongly price influences satisfaction relative to service quality.</p>
-<p>How are airline choice factors measured? #All factors in this analysis are measured using passenger-reported ratings. These ratings capture travelers’ perceptions, which are particularly relevant for understanding airline choice in non-business (leisure) travel.</p>
-<p>Value for money #Value for money is measured using the variable ValueRating, which reflects passengers’ perceived balance between the price paid and the quality of the experience received. It does not measure the actual ticket price, but rather whether passengers feel the service was worth the cost. Average ratings are computed by airline and over time.</p>
-<p>Seat comfort #Seat comfort is measured using SeatComfortRating, based on passengers’ evaluations of legroom, seat space, and physical comfort. This variable captures differences in aircraft configuration and airline business models.</p>
-<p>Service quality #Service quality is measured using ServiceRating, reflecting passengers’ assessments of cabin crew behavior, professionalism, and responsiveness during the flight.</p>
-<p>Ground services #Ground services are measured using GroundServiceRating, which evaluates airport-related processes such as check-in, boarding, and baggage handling.</p>
-<p>Onboard experience #The onboard experience is measured as a composite indicator combining FoodRating, EntertainmentRating, and WifiRating. This composite captures the overall quality of in-flight amenities and product differentiation.</p>
-<p>Methodological note #All variables are subjective evaluations rather than objective performance measures. However, because airline choice is driven by passenger perceptions, these ratings are well suited to analyzing how decision factors have evolved over time.</p>
+<p>How are airline choice factors measured? All factors in this analysis are measured using passenger-reported ratings. These ratings capture travelers’ perceptions, which are particularly relevant for understanding airline choice in non-business (leisure) travel.</p>
+<p>Value for money is measured using the variable ValueRating, which reflects passengers’ perceived balance between the price paid and the quality of the experience received. It does not measure the actual ticket price, but rather whether passengers feel the service was worth the cost. Average ratings are computed by airline and over time.</p>
+<p>Seat comfort is measured using SeatComfortRating, based on passengers’ evaluations of legroom, seat space, and physical comfort. This variable captures differences in aircraft configuration and airline business models.</p>
+<p>Service quality is measured using ServiceRating, reflecting passengers’ assessments of cabin crew behavior, professionalism, and responsiveness during the flight.</p>
+<p>Ground services are measured using GroundServiceRating, which evaluates airport-related processes such as check-in, boarding, and baggage handling.</p>
+<p>The onboard experience is measured as a composite indicator combining FoodRating, EntertainmentRating, and WifiRating. This composite captures the overall quality of in-flight amenities and product differentiation.</p>
+<p>Methodological note: All variables are subjective evaluations rather than objective performance measures. However, because airline choice is driven by passenger perceptions, these ratings are well suited to analyzing how decision factors have evolved over time.</p>
 <p>We classify a trip as non-business when TravelType is not equal to “Business”. All observations explicitly labeled as Business are excluded from the sample.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
