@@ -105,10 +105,6 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Premium airlines</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./comparison.html"> 
-<span class="menu-text">Comparisons</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./environmental_friendliness.html"> 
 <span class="menu-text">Environmental friendliness</span></a>
   </li>  
@@ -159,14 +155,15 @@ ul.task-list li input[type="checkbox"] {
 <p>Extract from the website: “Names of users were purposefully left out from the crawler. Although the earliest review dates back to 2001, note that some dimensions have been added to the website over time. Consequently, not all dimensions have been filled out for each review.”</p>
 <p>Screenshot from the actual document:</p>
 <p><img src="images/clipboard-3018868269.png" class="img-fluid"></p>
-<p>Because ticket prices are not observed, we measure price sensitivity using passengers’ value-for-money ratings, which reflect how strongly price influences satisfaction relative to service quality.</p>
-<p>How are airline choice factors measured? All factors in this analysis are measured using passenger-reported ratings. These ratings capture travelers’ perceptions, which are particularly relevant for understanding airline choice in non-business (leisure) travel.</p>
-<p>Seat comfort is measured using SeatComfortRating, based on passengers’ evaluations of legroom, seat space, and physical comfort. This variable captures differences in aircraft configuration and airline business models.</p>
-<p>Service quality is measured using ServiceRating, reflecting passengers’ assessments of cabin crew behavior, professionalism, and responsiveness during the flight.</p>
-<p>Ground services are measured using GroundServiceRating, which evaluates airport-related processes such as check-in, boarding, and baggage handling.</p>
-<p>The onboard experience is measured as a composite indicator combining FoodRating, EntertainmentRating, and WifiRating. This composite captures the overall quality of in-flight amenities and product differentiation.</p>
-<p>Methodological note: All variables are subjective evaluations rather than objective performance measures. However, because airline choice is driven by passenger perceptions, these ratings are well suited to analyzing how decision factors have evolved over time.</p>
-<p>We classify a trip as non-business when TravelType is not equal to “Business”. All observations explicitly labeled as Business are excluded from the sample.</p>
+<p>Because the ticket prices are not observed, we measure price sensitivity using passengers’ value-for-money ratings, which reflect how strongly price influences satisfaction relative to service quality. The dataset also included a column that stipulated whether the trip was business-related or not. Business-related trips were excluded from the analysis.</p>
+<p>The variables in this analysis are measured using the passenger-reported ratings. For instance:</p>
+<ul>
+<li><p>Seat comfort is measured using SeatComfortRating, based on passengers’ evaluations of legroom, seat space, and physical comfort.</p></li>
+<li><p>Service quality is measured using ServiceRating, reflecting passengers’ assessments of cabin crew behavior, professionalism, and responsiveness during the flight.</p></li>
+<li><p>Ground services are measured using GroundServiceRating, which evaluates airport-related processes (i.e.&nbsp;check-in, boarding, and baggage handling etc)</p></li>
+<li><p>The onboard experience is measured as a composite indicator that combines the FoodRating, EntertainmentRating, and WifiRating.</p></li>
+</ul>
+<p>HOWEVER, all variables are <em>subjective</em> evaluations. But, because airline choice is driven by passenger perceptions, these ratings are well suited to analyzing how decision factors have evolved over time.</p>
 
 
 </section>
@@ -246,7 +243,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/fm8062\.github\.io\/Airline-Choice\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
