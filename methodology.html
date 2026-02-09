@@ -159,13 +159,17 @@ ul.task-list li input[type="checkbox"] {
 <p>The variables in this analysis are measured using the passenger-reported ratings. For instance:</p>
 <ul>
 <li><p>Seat comfort is measured using SeatComfortRating, based on passengers’ evaluations of legroom, seat space, and physical comfort.</p></li>
-<li><p>Service quality is measured using ServiceRating, reflecting passengers’ assessments of cabin crew behavior, professionalism, and responsiveness during the flight.</p></li>
+<li><p>The variables service quality is measured using ServiceRating, reflecting passengers’ assessments of cabin crew behavior, professionalism, and responsiveness during the flight.</p></li>
 <li><p>Ground services are measured using GroundServiceRating, which evaluates airport-related processes (i.e.&nbsp;check-in, boarding, and baggage handling etc)</p></li>
 <li><p>The onboard experience is measured as a composite indicator that combines the FoodRating, EntertainmentRating, and WifiRating.</p></li>
 </ul>
 <p>HOWEVER, all variables are <em>subjective</em> evaluations. But, because airline choice is driven by passenger perceptions, these ratings are well suited to analyzing how decision factors have evolved over time.</p>
+<section id="ethical-statement" class="level4">
+<h4 class="anchored" data-anchor-id="ethical-statement">ETHICAL STATEMENT</h4>
+<p>All data used in the research were obtained from publicly available and ethically sourced secondary datasets. Ethical approval was not required.</p>
 
 
+</section>
 </section>
 </section>
 
@@ -243,7 +247,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/fm8062\.github\.io\/Airline-Choice\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
